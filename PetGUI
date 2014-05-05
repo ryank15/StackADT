@@ -1,0 +1,121 @@
+package pet;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import jsjf.LinkedStack;
+import jsjf.StackADT;
+
+public class PetGui {
+	public PetGui() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new GUIPanel();
+			}
+		});
+	}
+
+	public static void main(String[] args) {
+		new PetGui();
+	}
+}
+
+class GUIPanel implements ActionListener {
+	private JFrame frame;
+	private JPanel framePanel, dataPanel, buttonPanel;
+	private JTextArea dataTA;
+	private JButton pushBtn, popBtn, peekBtn;
+	private JTextField idTF, nameTF, ownerTF;
+	private StackADT<Pet> stack;
+
+	public GUIPanel() {
+		stack = new LinkedStack<>();
+
+		stack.push(new Pet(1, "Fido", "Bob"));
+		System.out.println(stack);
+
+		stack.push(new Pet(2, "Ziggy", "Sue"));
+		System.out.println(stack);
+
+		stack.push(new Pet(3, "Fluffy", "Mike"));
+		System.out.println(stack);
+
+		framePanel = new JPanel();
+		dataPanel = new JPanel();
+		buttonPanel = new JPanel();
+
+		dataTA = new JTextArea(20, 60);
+		JScrollPane dataSP = new JScrollPane(dataTA);
+		dataPanel.add(dataSP);
+
+		JLabel idLBL = new JLabel("Id");
+		idTF = new JTextField(5);
+		JLabel nameLBL = new JLabel("Pet Name");
+		nameTF = new JTextField(5);
+		JLabel ownerLBL = new JLabel("Owner Name");
+		ownerTF = new JTextField(5);
+
+		pushBtn = new JButton("Push");
+		pushBtn.addActionListener(this);
+
+		popBtn = new JButton("Pop");
+		popBtn.addActionListener(this);
+
+		peekBtn = new JButton("Peek");
+		peekBtn.addActionListener(this);
+
+		buttonPanel.add(idLBL);
+		buttonPanel.add(idTF);
+		buttonPanel.add(nameLBL);
+		buttonPanel.add(nameTF);
+		buttonPanel.add(ownerLBL);
+		buttonPanel.add(ownerTF);
+		buttonPanel.add(pushBtn);
+		buttonPanel.add(popBtn);
+		buttonPanel.add(peekBtn);
+
+		framePanel.setOpaque(true);
+		framePanel.setLayout(new BorderLayout());
+		framePanel.add(buttonPanel, BorderLayout.NORTH);
+		framePanel.add(dataPanel, BorderLayout.CENTER);
+
+		frame = new JFrame("Pet Stack GUI");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setContentPane(framePanel);
+		frame.pack();
+		frame.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+		if (source == pushBtn) {
+			int id = Integer.parseInt(idTF.getText());
+			String name = nameTF.getText();
+			String owner = ownerTF.getText();
+			stack.push(new Pet(id, name, owner));
+			dataTA.setText("Remaining Stack:\n" + stack.toString());
+		} else if (source == popBtn) {
+			Pet p = stack.pop();
+			idTF.setText(String.valueOf(p.getId()));
+			nameTF.setText(p.getName());
+			ownerTF.setText(p.getOwner());
+			dataTA.setText("Remaining Stack:\n" + stack.toString());
+		} else if (source == peekBtn) {
+			Pet p = stack.peek();
+			idTF.setText(String.valueOf(p.getId()));
+			nameTF.setText(p.getName());
+			ownerTF.setText(p.getOwner());
+			dataTA.setText("Remaining Stack:\n" + stack.toString());
+		}
+	}
+}
