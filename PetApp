@@ -1,0 +1,28 @@
+package pet;
+
+import jsjf.ArrayStack;
+import jsjf.StackADT;
+
+public class PetApp {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		StackADT<Pet> stack = new ArrayStack<>();
+		
+		stack.push(new Pet(1, "Fido", "Bob"));
+		System.out.println(stack);
+		
+		stack.push(new Pet(2, "Ziggy", "Sue"));
+		System.out.println(stack);
+		
+		stack.push(new Pet(3, "Fluffy", "Mike"));
+		System.out.println(stack);
+		
+		while (! stack.isEmpty()) {
+			System.out.println(stack.pop());
+		}
+	}
+
+}
