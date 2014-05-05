@@ -1,0 +1,25 @@
+package jsjf;
+
+import java.util.Scanner;
+
+public class StackTest {
+	public static void main(String[] args) {
+		StackADT<String> stack = new LinkedStack<>();
+		
+		stack.push(new String("hi"));
+		stack.push("bye");
+		stack.push("potato");
+		stack.push("salad");
+		System.out.println(stack.toString());
+		
+		String x = stack.pop();
+		System.out.println("a = " + x);
+		
+		x = stack.pop();
+		System.out.println("b = " + x);
+		x = stack.pop();
+		System.out.println("c = " + x);
+		x = stack.pop();
+		System.out.println("d = " + x);
+	}
+}
