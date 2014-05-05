@@ -1,0 +1,72 @@
+package jsjf;
+
+import java.util.Arrays;
+
+import exceptions.EmptyCollectionException;
+
+public class ArrayStack<T> implements StackADT<T> {
+
+	private final static int DEFAULT_CAPACITY = 100;
+	
+	private int top;
+	private T[] stack;
+	
+	public ArrayStack() {
+		this(DEFAULT_CAPACITY);
+	}
+	
+	public ArrayStack(int initialCapacity) {
+		top = 0;
+		stack = (T[]) (new Object[initialCapacity]);
+	}
+	
+	@Override
+	public void push(T element) {
+		if (size() == stack.length)
+			expandCapacity();
+		
+		stack[top] = element;
+		top++;
+	}
+
+	private void expandCapacity() {
+		stack = Arrays.copyOf(stack, stack.length * 2);
+	}
+	
+	@Override
+	public T pop() {
+		if (isEmpty())
+			throw new EmptyCollectionException("stack");
+		
+		top--;
+		T result = stack[top];
+		stack[top] = null;
+		return result;
+	}
+
+	@Override
+	public T peek() {
+		if (isEmpty())
+			throw new EmptyCollectionException("stack");
+		return stack[top-1];
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return (top == 0);
+	}
+
+	@Override
+	public int size() {
+		return top;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int index=0; index < top; index++) {
+			sb.append(stack[index].toString() + "\n");
+		}
+		return sb.toString();
+	}
+}
